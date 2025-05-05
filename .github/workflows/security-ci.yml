@@ -1,4 +1,4 @@
-name: CI
+name: CI Security
 
 on:
   push:
@@ -11,7 +11,6 @@ permissions:
 jobs:
   
   SAST:
-    needs: SCA
     runs-on: ubuntu-latest
     steps:   
     
