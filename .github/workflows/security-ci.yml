@@ -69,8 +69,18 @@ jobs:
     
       - name: Image Analysis
         run: |
-          echo "Image Analysis"
-
+          docker pull clagosu/ms-aumento-voto:latest
+                  - name: Aqua Security Trivy
+      - name: Vulnerability Analysis
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: 'clagosu/ms-aumento-voto:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          
   Docker-push:
     needs: 
       - Container-Analysis
