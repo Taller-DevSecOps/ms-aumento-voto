@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Git Clone
+        uses: actions/checkout@v4
+
+      - name: Set Up JDK 
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      
+      - name: Build
+        run: |
+          #mvn package
+          echo "build"
+      - name: Ejecucion Test Unitarios
+        run: |
+          #mvn package test
+          echo "Unit test"
+  
+  SCA:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+  
+      - name: SCA Analysis
+        run: |
+          echo "SCA"
+  
+  SAST:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:   
+    
+      - name: Git Clone
+        uses: actions/checkout@v4
+      
+      - name: Set Up JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: SAST
+        run: |
+          echo "SAST"
+          
+  Docker-build:
+    needs: 
+    - SAST
+    - SCA
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Docker Auth
+        run: |
+          echo "Docker login"
+
+      - name: Docker Config
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Construccion Imagen
+        run: | 
+          #docker build -t clagosu/ms-aumento-voto:latest .
+          echo "Docker build"
+
+  Container-Analysis:
+    needs: Docker-build
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Image Analysis
+        run: |
+          echo "Image Analysis"
+
+  Docker-push:
+    needs: 
+      - Container-Analysis
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Docker push
+        run: |
+          echo "Docker push"
+  
