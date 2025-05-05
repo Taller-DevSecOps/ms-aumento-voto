@@ -57,10 +57,10 @@ jobs:
           ls -R
                     
   Docker-build:
-  name: Build Docker Image
+    name: Build Docker Image
     needs: 
-    - SAST
-    - SCA
+      - SAST
+      - SCA
     runs-on: ubuntu-latest
     steps:
     
