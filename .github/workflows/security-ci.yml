@@ -67,10 +67,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-      - name: Image Analysis
-        run: |
-          docker pull clagosu/ms-aumento-voto:latest
-                  - name: Aqua Security Trivy
       - name: Vulnerability Analysis
         uses: aquasecurity/trivy-action@0.30.0
         with:
