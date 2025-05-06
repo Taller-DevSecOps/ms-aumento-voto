@@ -3,7 +3,12 @@ name: CI Security
 on:
   push:
   workflow_dispatch:
-
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+  
 jobs:
   security-ci:  
     uses: Taller-DevSecOps/pipeline-ci/.github/workflows/pipeline-ci.yml@main
