@@ -36,6 +36,15 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:java-kotlin"
+          
+      - name: Set final commit status
+        uses: myrotvorets/set-commit-status-action@master
+        if: always()
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          status: ${{ job.status }}
+          context: Security Testing
+          sha: ${{ github.sha }}
  
   SCA:
     needs: SAST
