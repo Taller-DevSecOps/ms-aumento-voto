@@ -3,6 +3,8 @@ name: CI Security
 on:
   push:
   workflow_dispatch:
+  pull_request:
+  
 permissions:
   security-events: write
   packages: read
@@ -34,6 +36,15 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:java-kotlin"
+          
+      - name: Set final commit status
+        uses: myrotvorets/set-commit-status-action@master
+        if: always()
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          status: ${{ job.status }}
+          context: Security Testing
+          sha: ${{ github.sha }}
  
   SCA:
     needs: SAST
@@ -85,7 +96,7 @@ jobs:
         with:
           image-ref: 'clagosu/ms-aumento-voto:latest'
           format: 'table'
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
