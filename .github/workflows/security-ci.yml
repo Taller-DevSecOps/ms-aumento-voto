@@ -13,5 +13,5 @@ permissions:
   
 jobs:
   security-ci:  
-    uses: Taller-DevSecOps/pipeline-ci/.github/workflows/pipeline-ci.yml@v2
+    uses: Taller-DevSecOps/pipeline-ci/.github/workflows/pipeline-ci.yml@v4
     secrets: inherit
