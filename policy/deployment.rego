@@ -11,3 +11,9 @@ deny[msg] {
   not input.spec.selector.matchLabels["app"]
   msg := "Containers must provide app label for pod selectors"
 }
+
+deny[msg] {
+  input.kind == "Deployment"
+  input.spec.replicas > 3
+  msg := sprintf("Replicas must be 3 or fewer (found %v)", [input.spec.replicas])
+}
