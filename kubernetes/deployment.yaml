@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-aumento-voto
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ms-aumento-voto
+  template:
+    metadata:
+      labels:
+        app: ms-aumento-voto
+    spec:
+      containers:
+      - name: ms-aumento-voto
+        image: clagosu/ms-aumento-voto:latest
+        ports:
+        - containerPort: 8080
