@@ -17,6 +17,16 @@ deny[msg] {
   input.spec.replicas > 3
   msg := sprintf("Replicas must be 3 or fewer (found %v)", [input.spec.replicas])
 }
+#helper
+container_name(container) = name {
+  name := container.name
+  name != ""
+}
+
+#helper
+container_name(container) = "<unnamed>" {
+  not container.name
+}
 
 valid_limits(container) {
   container.resources
