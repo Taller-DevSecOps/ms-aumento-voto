@@ -1,7 +1,8 @@
-name: CI Security
+name: CI Push
 
 on:
-  pull_request: 
+  push:
+
 permissions:
   security-events: write
   packages: read
@@ -53,49 +54,4 @@ jobs:
           path: '.'
           format: 'HTML'          
                     
-  Docker-build:
-    name: Build Docker Image
-    needs: 
-      - SAST
-      - SCA
-    runs-on: ubuntu-latest
-    steps:
-    
-      - name: Docker Auth
-        run: |
-          echo "Docker login"
-
-      - name: Docker Config
-        uses: docker/setup-buildx-action@v3
-      
-      - name: Construccion Imagen
-        run: | 
-          #docker build -t clagosu/ms-aumento-voto:latest .
-          echo "Docker build"
-
-  Container-Analysis:
-    name: Container Vulnerability Analysis
-    needs: Docker-build
-    runs-on: ubuntu-latest
-    steps:
-    
-      - name: Vulnerability Analysis
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          image-ref: 'clagosu/ms-aumento-voto:latest'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-          
-  Docker-push:
-    needs: 
-      - Container-Analysis
-    runs-on: ubuntu-latest
-    steps:
-    
-      - name: Docker push
-        run: |
-          echo "Docker push"
-  
+ 
