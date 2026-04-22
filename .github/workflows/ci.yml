@@ -1,0 +1,57 @@
+name: CI Push
+
+on:
+  push:
+
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+jobs:
+  
+  SAST:
+    runs-on: ubuntu-latest
+    name: Static Application Security Testing
+    steps:   
+    
+      - name: Git Clone
+        uses: actions/checkout@v4
+      
+      - name: Set Up JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+        
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java-kotlin
+          build-mode: none
+    
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:java-kotlin"
+ 
+  SCA:
+    needs: SAST
+    name: Software Composition Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Clone
+        uses: actions/checkout@v4
+        
+      - name: Build
+        run: |
+          mvn package
+          
+      - name: Dependency Check
+        uses: dependency-check/Dependency-Check_Action@1.1.0
+        with:
+          project: 'ms-aumento-voto'
+          path: '.'
+          format: 'HTML'          
+                    
+ 
