@@ -25,7 +25,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SYNK_PAT }}
 
       - name: Snyk Code test
-        run: snyk code test --org=4669a9a4-aafd-4ea2-b923-e18c8957ef88 --sarif > snyk-code.sarif
+        run: snyk code test --org=4669a9a4-aafd-4ea2-b923-e18c8957ef88 --report --sarif > snyk-code.sarif
         env:
           SNYK_TOKEN: ${{ secrets.SYNK_PAT }}
 
